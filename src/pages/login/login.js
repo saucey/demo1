@@ -12,6 +12,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { Auth } from 'aws-amplify';
+
 
 function Copyright() {
   return (
@@ -48,6 +50,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Login() {
   const classes = useStyles();
+  
+  const submitForm = async () => {
+    let user = await Auth.signIn('leo@designanddev.co.uk', 'Password00!');
+    console.log(user, 'the user!!!');
+}
+
 
   return (
     <Container component="main" maxWidth="xs">
@@ -87,11 +95,12 @@ export default function Login() {
             label="Remember me"
           />
           <Button
-            type="submit"
+            // type="submit"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={submitForm}
           >
             Sign In
           </Button>
