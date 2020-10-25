@@ -103,7 +103,6 @@ export default function Login_hook() {
           onSubmit={handleSubmit(onSubmit)}
           >
           <TextField
-            
             value={email} 
             onChange={(e) => setEmail(e.target.value)} 
             variant="outlined"
@@ -118,7 +117,6 @@ export default function Login_hook() {
           />
           {errors.email && <span>This field is required</span>}
           <TextField
-            error
             value={password} 
             onChange={(e) => setPassword(e.target.value)} 
             variant="outlined"
@@ -139,7 +137,7 @@ export default function Login_hook() {
           {
             errors.password?.type === "validate" && (
             <div className="error">Problem with server</div>)
-          }
+          } 
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
