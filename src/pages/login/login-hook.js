@@ -15,6 +15,7 @@ import Container from '@material-ui/core/Container';
 import { Auth } from 'aws-amplify';
 import { useDispatch, useSelector } from "react-redux";
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
+import { useForm } from "react-hook-form";
 
 function Copyright() {
   return (
@@ -49,33 +50,33 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Login() {
-  
+export default function Login_hook() {
+
+  const { register, handleSubmit, watch, errors } = useForm({mode: 'onSubmit', reValidateMode: 'onSubmit'});
+  const onSubmit = data => console.log(data, 'the data of the object');
+
+  useEffect(() => {
+  }, [])
+
+  const classes = useStyles();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
 
-  const classes = useStyles();
   const state = useSelector(state => state);
-  const dispatch = useDispatch()
-  
-  useEffect(() => {
-    ValidatorForm.addValidationRule('isCustom', (value) => {
-      console.log(error, 'error in validation rule!!!!')
-      // if(value !== '') {
-        return error !== null ? false : true;
-      // }
-    });
-  }, [error])
 
+  const dispatch = useDispatch()
 
   const submitForm = async () => {
-    setError(null)
       try {
         let user = await Auth.signIn(email, password);
+        console.log(user, 'the e') 
         LOGIN_USER(user);
+        return true;
       } catch (e) {
-        setError(e)
+        console.log(e, 'the e')
+        return false;
       } 
   }
   
@@ -96,13 +97,12 @@ export default function Login() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <ValidatorForm 
+        <form 
           className={classes.form}             
           // ref={useRef()  }
-          onSubmit={submitForm}
-          onError={errors => console.log(errors, 'errors here')}
+          onSubmit={handleSubmit(onSubmit)}
           >
-          <TextValidator
+          <TextField
             
             value={email} 
             onChange={(e) => setEmail(e.target.value)} 
@@ -114,10 +114,11 @@ export default function Login() {
             name="email"
             autoComplete="email"
             autoFocus
-            validators={['required', 'isEmail', 'isCustom']}
-            errorMessages={['this field is required', 'email is not valid', error !== null && error.message]}
+            inputRef={register({ required: true })}
           />
-          <TextValidator
+          {errors.email && <span>This field is required</span>}
+          <TextField
+            error
             value={password} 
             onChange={(e) => setPassword(e.target.value)} 
             variant="outlined"
@@ -128,9 +129,17 @@ export default function Login() {
             type="password"
             id="password"
             autoComplete="current-password"
-            validators={['required', 'isCustom']}
-            errorMessages={['this field is required', error !== null && error.message]}
+            inputRef={register({ required: true, validate: submitForm })}
+            error={!!errors.password}
           />
+          {
+            errors.password?.type === "required" && (
+            <div className="error">this field re required</div>)
+          }
+          {
+            errors.password?.type === "validate" && (
+            <div className="error">Problem with server</div>)
+          }
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
@@ -159,7 +168,7 @@ export default function Login() {
               </Link>
             </Grid>
           </Grid>
-        </ValidatorForm>
+        </form>
       </div>
       <Box mt={8}>
         <Copyright />
