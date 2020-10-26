@@ -5,6 +5,8 @@
     },
     "extends": [
         "plugin:react/recommended",
+        "plugin:jest/recommended",
+        "prettier",
         "standard"
     ],
     "globals": {
@@ -13,14 +15,19 @@
     },
     "parserOptions": {
         "ecmaFeatures": {
-            "jsx": true
+            "jsx": true,
+            "experimentalObjectRestSpread": true
         },
         "ecmaVersion": 2018,
         "sourceType": "module"
     },
     "plugins": [
-        "react"
+        "react", "jest", "prettier"
     ],
     "rules": {
-    }
+        "no-unused-vars": 1,
+        "react/display-name": "off",
+        "no-tabs": 0
+    },
+    "parser": "babel-eslint"
 }

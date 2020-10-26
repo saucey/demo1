@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import TextField from '@material-ui/core/TextField'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
 import Link from '@material-ui/core/Link'
@@ -13,7 +12,7 @@ import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import { Auth } from 'aws-amplify'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
 
 function Copyright () {
@@ -55,7 +54,7 @@ export default function Login () {
   const [error, setError] = useState(null)
 
   const classes = useStyles()
-  const state = useSelector(state => state)
+  // const state = useSelector(state => state)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -101,7 +100,6 @@ export default function Login () {
           onError={errors => console.log(errors, 'errors here')}
         >
           <TextValidator
-
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             variant="outlined"
