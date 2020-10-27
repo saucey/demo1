@@ -3,7 +3,7 @@ import { Redirect } from 'react-router'
 
 const Authorization = WrappedComponent => {
   const NewComponent = props => {
-    const isAllowed = false
+    const isAllowed = true
     return (
       <div>
         { isAllowed === true ? <WrappedComponent {...props}/> : <Redirect to="/" /> }

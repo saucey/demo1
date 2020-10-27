@@ -1,22 +1,19 @@
 import React from 'react'
-import Layout from '../../layouts/navbar'
 import Authorization from '../../components/higher-order-components/authorization'
+import Records from './records'
 
 const Home = () => {
-//   const wrapper = props => {
+  const user = {
+    name: 'Leo',
+    age: 33,
+    sex: 'Male'
+  }
+
   return (
     <div>
-      <Layout/>
+      <Records data={user} time="1"/>
     </div>
   )
-  //   }
-//   return wrapper
 }
-
-// export default Home
-// export default Home
-// const Authenticaion = () => {
-//     if(notLoggin) ? <Redirect to=""/> : "<>"
-// }
 
 export const WithAuthorization = Authorization(Home)
