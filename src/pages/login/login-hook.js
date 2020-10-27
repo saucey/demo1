@@ -51,7 +51,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LoginHook () {
   const { register, handleSubmit, errors } = useForm({ mode: 'onSubmit', reValidateMode: 'onSubmit' })
-  const onSubmit = data => console.log(data, 'the data of the object')
+
+  const onSubmit = data => {
+    console.log(data, 'the data of the object')
+    console.log(errors, 'the errors!!!')
+  }
 
   useEffect(() => {
   }, [])
@@ -60,13 +64,14 @@ export default function LoginHook () {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  // const [error, setError] = useState(null)
 
+  // const [error, setError] = useState(null)
   // const state = useSelector(state => state)
 
   const dispatch = useDispatch()
 
   const submitForm = async () => {
+    // console.log(errors, 'errors!!!')
     try {
       const user = await Auth.signIn(email, password)
       console.log(user, 'the e')
@@ -110,9 +115,13 @@ export default function LoginHook () {
             name="email"
             autoComplete="email"
             autoFocus
-            inputRef={register({ required: true })}
+            inputRef={register({ required: true, validate: submitForm })}
+            error={errors.email?.type === 'required' || errors.email?.type === 'validate'}
           />
-          {errors.email && <span>This field is required</span>}
+          <p>
+            {errors.email?.type === 'required' && <span>This field is required</span>}
+            {errors.email?.type === 'validate' && <span>Problem with server</span>}
+          </p>
           <TextField
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -125,16 +134,13 @@ export default function LoginHook () {
             id="password"
             autoComplete="current-password"
             inputRef={register({ required: true, validate: submitForm })}
-            error={!!errors.password}
+            error={errors.password?.type === 'required' || errors.password?.type === 'validate'}
           />
-          {
-							errors.password?.type === 'required' && (
-              <div className="error">this field re required</div>)
-          }
-          {
-							errors.password?.type === 'validate' && (
-              <div className="error">Problem with server</div>)
-          }
+          <p>
+            {errors.password?.type === 'required' && <span>This field is required</span>}
+            {errors.password?.type === 'validate' && <span>Problem with server</span>}
+          </p>
+
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"

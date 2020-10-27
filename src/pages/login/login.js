@@ -71,7 +71,9 @@ export default function Login () {
     try {
       const user = await Auth.signIn(email, password)
       LOGIN_USER(user)
+      console.log(user, 'users')
     } catch (e) {
+      console.log(e, 'errors')
       setError(e)
     }
   }
