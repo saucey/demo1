@@ -5,7 +5,7 @@ const Records = () => {
   return (
     <div>
       <h1>
-        Record Pages
+        Home
       </h1>
     </div>
   )

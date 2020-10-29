@@ -17,7 +17,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { useHistory } from 'react-router-dom';
 
-
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -59,6 +58,7 @@ export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errorMessaging, setErrorMessaging] = useState(null)
+
   const userLoggedIn = useSelector((state) => state.userLoggedIn);
 
   const history = useHistory();
@@ -81,17 +81,17 @@ export default function Login() {
       userLoggedIn: user
     })
   }
-  
+
   const submitForm = async () => {
     try {
       const user = await Auth.signIn(email, password)
       LOGIN_USER(user)
+      return true;
     } catch (e) {
       setErrorMessaging(e.message);
       return false
     }
   }
-
 
   return (
     <Container component="main" maxWidth="xs">

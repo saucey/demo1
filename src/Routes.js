@@ -10,6 +10,7 @@ export default () => (
       <Route path="/login-old" exact component={LoginOld} />
       <Route path="/" exact component={Login} />
       <Route path="/home" exact component={WithAuthorization} />
+      <Route path="/sectors" exact component={WithAuthorization} />
     </Switch>
   </BrowserRouter>
 )

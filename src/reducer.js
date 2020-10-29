@@ -1,5 +1,6 @@
 const initState = {
-  userLoggedIn: null
+  userLoggedIn: null,
+  listSectors: null
 }
 
 const Reducer = (state = initState, action) => {
@@ -14,6 +15,12 @@ const Reducer = (state = initState, action) => {
       return {
         ...state,
         userLoggedIn: action.userLoggedIn
+      }
+    
+    case 'LIST_SECTORS':
+      return {
+        ...state,
+        listSectors: action.listSectors
       }
 
       // you can have as many case statements as you need

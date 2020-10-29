@@ -115,7 +115,6 @@ const MainLayout = WrappedComponent => {
       history.push('/');
     };
 
-
     return (
       <div className={classes.root}>
         <CssBaseline />

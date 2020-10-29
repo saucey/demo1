@@ -1,8 +1,41 @@
-import React from 'react'
+import React, {useEffect} from 'react'
+import { useLocation } from 'react-router-dom';
 import Authorization from '../../components/higher-order-components/authorization'
+
 import Records from './records'
+import Sectors from './sectors'
+
+
 
 const Home = () => {
+
+  const location = useLocation();
+  
+  const PageRoute = () => {
+
+    switch(location.pathname) {
+        case '/home':
+          return (<Sectors />)
+      // code block
+        case '/sectors':
+          return (<Sectors />)
+      // code block
+      default:
+        return false;
+      // code block
+    }
+  }
+
+  //   useEffect(() => {
+  //   if (userLoggedIn !== null) {
+  //     history.push('/home')
+  //   }
+  // }, [])
+
+  
+
+  PageRoute()
+
   const user = {
     name: 'Leo',
     age: 33,
@@ -11,7 +44,7 @@ const Home = () => {
 
   return (
     <div>
-      <Records data={user} time="1" />
+      <PageRoute />
     </div>
   )
 }
