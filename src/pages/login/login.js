@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import CssBaseline from '@material-ui/core/CssBaseline'
+import TextField from '@material-ui/core/TextField'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
 import Link from '@material-ui/core/Link'
@@ -12,10 +13,12 @@ import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import { Auth } from 'aws-amplify'
-import { useDispatch } from 'react-redux'
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
+import { useDispatch, useSelector } from 'react-redux'
+import { useForm } from 'react-hook-form'
+import { useHistory } from 'react-router-dom';
 
-function Copyright () {
+
+function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
@@ -48,33 +51,36 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export default function Login () {
+export default function Login() {
+  const { register, handleSubmit, errors } = useForm({ mode: 'onSubmit', reValidateMode: 'onSubmit' })
+  const classes = useStyles()
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError] = useState(null)
+  const [errorMessaging, setErrorMessaging] = useState(null)
+  const userLoggedIn = useSelector((state) => state.userLoggedIn);
 
-  const classes = useStyles()
-  // const state = useSelector(state => state)
-  const dispatch = useDispatch()
+  const history = useHistory();
 
   useEffect(() => {
-    ValidatorForm.addValidationRule('isCustom', (value) => {
-      console.log(error, 'error in validation rule!!!!')
-      // if(value !== '') {
-      return error === null
-      // }
-    })
-  }, [error])
+    if (userLoggedIn !== null) {
+      history.push('/home')
+    }
+  }, [])
+
+  const dispatch = useDispatch()
+
+  const onSubmit = data => {
+    history.push('/home')
+  }
 
   const submitForm = async () => {
-    setError(null)
     try {
       const user = await Auth.signIn(email, password)
       LOGIN_USER(user)
-      console.log(user, 'users')
     } catch (e) {
-      console.log(e, 'errors')
-      setError(e)
+      setErrorMessaging(e.message);
+      return false
     }
   }
 
@@ -95,13 +101,11 @@ export default function Login () {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <ValidatorForm
+        <form
           className={classes.form}
           // ref={useRef()  }
-          onSubmit={submitForm}
-          onError={errors => console.log(errors, 'errors here')}
-        >
-          <TextValidator
+          onSubmit={handleSubmit(onSubmit)}>
+          <TextField
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             variant="outlined"
@@ -112,10 +116,14 @@ export default function Login () {
             name="email"
             autoComplete="email"
             autoFocus
-            validators={['required', 'isEmail', 'isCustom']}
-            errorMessages={['this field is required', 'email is not valid', error !== null && error.message]}
+            inputRef={register({ required: true, validate: submitForm })}
+            error={errors.email?.type === 'required' || errors.email?.type === 'validate'}
           />
-          <TextValidator
+          <p>
+            {errors.email?.type === 'required' && <span>This field is required</span>}
+            {errors.email?.type === 'validate' && <span>{errorMessaging}</span>}
+          </p>
+          <TextField
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             variant="outlined"
@@ -126,16 +134,18 @@ export default function Login () {
             type="password"
             id="password"
             autoComplete="current-password"
-            validators={['required', 'isCustom']}
-            errorMessages={['this field is required', error !== null && error.message]}
+            inputRef={register({ required: true, validate: submitForm })}
+            error={errors.password?.type === 'required' || errors.password?.type === 'validate'}
           />
+          <p>
+            {errors.password?.type === 'required' && <span>This field is required</span>}
+            {errors.password?.type === 'validate' && <span>{errorMessaging}</span>}
+          </p>
+
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           />
-          <span styles="color: red">
-            {error !== null && error.message}
-          </span>
           <Button
             type="submit"
             fullWidth
@@ -157,7 +167,7 @@ export default function Login () {
               </Link>
             </Grid>
           </Grid>
-        </ValidatorForm>
+        </form>
       </div>
       <Box mt={8}>
         <Copyright />

@@ -18,6 +18,9 @@ import ListItemText from '@material-ui/core/ListItemText'
 import InboxIcon from '@material-ui/icons/MoveToInbox'
 import MailIcon from '@material-ui/icons/Mail'
 import Button from '@material-ui/core/Button'
+import { Auth } from 'aws-amplify';
+import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux'
 
 const drawerWidth = 240
 
@@ -83,9 +86,12 @@ const useStyles = makeStyles((theme) => ({
 
 const MainLayout = WrappedComponent => {
   const NewComponent = props => {
-    const classes = useStyles()
-    const theme = useTheme()
-    const [open, setOpen] = React.useState(false)
+    const classes = useStyles();
+    const theme = useTheme();
+    const [open, setOpen] = React.useState(false);
+    const history = useHistory();
+
+    const dispatch = useDispatch()
 
     const handleDrawerOpen = () => {
       setOpen(true)
@@ -94,6 +100,20 @@ const MainLayout = WrappedComponent => {
     const handleDrawerClose = () => {
       setOpen(false)
     }
+
+    const LOGOUT_USER = () => {
+      dispatch({
+        type: 'LOGOUT',
+        userLoggedIn: null
+      })
+    }
+
+    const handleLogout = async () => {
+      await Auth.signOut();
+      LOGOUT_USER();
+      history.push('/');
+    };
+
 
     return (
       <div className={classes.root}>
@@ -118,7 +138,7 @@ const MainLayout = WrappedComponent => {
             Persistent drawer
             </Typography>
             <div className={classes.logoutBtn}>
-              <Button color="inherit">Logout</Button>
+              <Button onClick={handleLogout} color="inherit">Logout</Button>
             </div>
 
           </Toolbar>

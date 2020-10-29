@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import TextField from '@material-ui/core/TextField'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
 import Link from '@material-ui/core/Link'
@@ -14,14 +13,14 @@ import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import { Auth } from 'aws-amplify'
 import { useDispatch } from 'react-redux'
-import { useForm } from 'react-hook-form'
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
 
 function Copyright () {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
-		Your Website
+        Your Website
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -49,37 +48,33 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export default function LoginHook () {
-  const { register, handleSubmit, errors } = useForm({ mode: 'onSubmit', reValidateMode: 'onSubmit' })
-
-  const onSubmit = data => {
-    console.log(data, 'the data of the object')
-    console.log(errors, 'the errors!!!')
-  }
-
-  useEffect(() => {
-  }, [])
-
-  const classes = useStyles()
-
+export default function LoginOld () {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [error, setError] = useState(null)
 
-  // const [error, setError] = useState(null)
+  const classes = useStyles()
   // const state = useSelector(state => state)
-
   const dispatch = useDispatch()
 
+  useEffect(() => {
+    ValidatorForm.addValidationRule('isCustom', (value) => {
+      console.log(error, 'error in validation rule!!!!')
+      // if(value !== '') {
+      return error === null
+      // }
+    })
+  }, [error])
+
   const submitForm = async () => {
-    // console.log(errors, 'errors!!!')
+    setError(null)
     try {
       const user = await Auth.signIn(email, password)
-      console.log(user, 'the e')
       LOGIN_USER(user)
-      return true
+      console.log(user, 'users')
     } catch (e) {
-      console.log(e, 'the e')
-      return false
+      console.log(e, 'errors')
+      setError(e)
     }
   }
 
@@ -98,13 +93,15 @@ export default function LoginHook () {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-						Sign in
+          Sign in
         </Typography>
-        <form
+        <ValidatorForm
           className={classes.form}
           // ref={useRef()  }
-          onSubmit={handleSubmit(onSubmit)}>
-          <TextField
+          onSubmit={submitForm}
+          onError={errors => console.log(errors, 'errors here')}
+        >
+          <TextValidator
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             variant="outlined"
@@ -115,14 +112,10 @@ export default function LoginHook () {
             name="email"
             autoComplete="email"
             autoFocus
-            inputRef={register({ required: true, validate: submitForm })}
-            error={errors.email?.type === 'required' || errors.email?.type === 'validate'}
+            validators={['required', 'isEmail', 'isCustom']}
+            errorMessages={['this field is required', 'email is not valid', error !== null && error.message]}
           />
-          <p>
-            {errors.email?.type === 'required' && <span>This field is required</span>}
-            {errors.email?.type === 'validate' && <span>Problem with server</span>}
-          </p>
-          <TextField
+          <TextValidator
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             variant="outlined"
@@ -133,18 +126,16 @@ export default function LoginHook () {
             type="password"
             id="password"
             autoComplete="current-password"
-            inputRef={register({ required: true, validate: submitForm })}
-            error={errors.password?.type === 'required' || errors.password?.type === 'validate'}
+            validators={['required', 'isCustom']}
+            errorMessages={['this field is required', error !== null && error.message]}
           />
-          <p>
-            {errors.password?.type === 'required' && <span>This field is required</span>}
-            {errors.password?.type === 'validate' && <span>Problem with server</span>}
-          </p>
-
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           />
+          <span styles="color: red">
+            {error !== null && error.message}
+          </span>
           <Button
             type="submit"
             fullWidth
@@ -152,12 +143,12 @@ export default function LoginHook () {
             color="primary"
             className={classes.submit}
           >
-					Sign In
+            Sign In
           </Button>
           <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">
-					Forgot password?
+                Forgot password?
               </Link>
             </Grid>
             <Grid item>
@@ -166,7 +157,7 @@ export default function LoginHook () {
               </Link>
             </Grid>
           </Grid>
-        </form>
+        </ValidatorForm>
       </div>
       <Box mt={8}>
         <Copyright />

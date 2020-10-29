@@ -7,6 +7,12 @@ const Reducer = (state = initState, action) => {
     case 'LOGIN':
       return {
         ...state,
+        userLoggedIn: {...action.userLoggedIn, loggedIn: true}
+      }
+
+    case 'LOGOUT':
+      return {
+        ...state,
         userLoggedIn: action.userLoggedIn
       }
 
