@@ -11,7 +11,7 @@ const Home = () => {
 
   return (
     <div>
-      <Records data={user} time="1"/>
+      <Records data={user} time="1" />
     </div>
   )
 }

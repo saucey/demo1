@@ -22,6 +22,7 @@ import { Auth } from 'aws-amplify';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux'
 
+
 const drawerWidth = 240
 
 const useStyles = makeStyles((theme) => ({
@@ -135,7 +136,7 @@ const MainLayout = WrappedComponent => {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" noWrap>
-            Persistent drawer
+              Persistent drawer
             </Typography>
             <div className={classes.logoutBtn}>
               <Button onClick={handleLogout} color="inherit">Logout</Button>
@@ -184,7 +185,7 @@ const MainLayout = WrappedComponent => {
           })}
         >
           <div className={classes.drawerHeader} />
-          <WrappedComponent {...props}/>
+          <WrappedComponent {...props} />
         </main>
       </div>
     )

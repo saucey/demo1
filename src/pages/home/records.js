@@ -1,7 +1,7 @@
 import React from 'react'
 import Layout from '../../layouts/navbar'
-
-const Records = (props) => {
+ 
+const Records = () => {
   return (
     <div>
       <h1>
