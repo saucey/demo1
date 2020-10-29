@@ -24,7 +24,8 @@ function Copyright() {
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
         Your Website
-      </Link>{' '}
+      </Link>
+      {' '}
       {new Date().getFullYear()}
       {'.'}
     </Typography>
@@ -74,6 +75,13 @@ export default function Login() {
     history.push('/home')
   }
 
+  const LOGIN_USER = (user) => {
+    dispatch({
+      type: 'LOGIN',
+      userLoggedIn: user
+    })
+  }
+  
   const submitForm = async () => {
     try {
       const user = await Auth.signIn(email, password)
@@ -84,12 +92,6 @@ export default function Login() {
     }
   }
 
-  const LOGIN_USER = (user) => {
-    dispatch({
-      type: 'LOGIN',
-      userLoggedIn: user
-    })
-  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -104,7 +106,8 @@ export default function Login() {
         <form
           className={classes.form}
           // ref={useRef()  }
-          onSubmit={handleSubmit(onSubmit)}>
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <TextField
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -163,7 +166,7 @@ export default function Login() {
             </Grid>
             <Grid item>
               <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
+                Don't have an account? Sign Up
               </Link>
             </Grid>
           </Grid>
