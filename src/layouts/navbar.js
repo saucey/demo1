@@ -21,7 +21,7 @@ import Button from '@material-ui/core/Button'
 import { Auth } from 'aws-amplify';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux'
-
+import { LOGOUT_USER } from '../store/actions'
 
 const drawerWidth = 240
 
@@ -102,16 +102,13 @@ const MainLayout = WrappedComponent => {
       setOpen(false)
     }
 
-    const LOGOUT_USER = () => {
-      dispatch({
-        type: 'LOGOUT',
-        userLoggedIn: null
-      })
+    const logoutUser = () => {
+      dispatch(LOGOUT_USER())
     }
 
     const handleLogout = async () => {
       await Auth.signOut();
-      LOGOUT_USER();
+      logoutUser();
       history.push('/');
     };
 

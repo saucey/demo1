@@ -1,9 +1,11 @@
 const initState = {
   userLoggedIn: null,
-  listSectors: null
+  listSectors: null,
+  epic: null
 }
 
 const Reducer = (state = initState, action) => {
+  console.log(action, 'the actions here!!!')
   switch (action.type) {
     case 'LOGIN':
       return {
@@ -21,6 +23,12 @@ const Reducer = (state = initState, action) => {
       return {
         ...state,
         listSectors: action.listSectors
+      }
+    
+    case 'EPIC':
+      return {
+        ...state,
+        epic: true
       }
 
       // you can have as many case statements as you need

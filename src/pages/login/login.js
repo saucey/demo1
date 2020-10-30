@@ -16,6 +16,8 @@ import { Auth } from 'aws-amplify'
 import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { useHistory } from 'react-router-dom';
+import { LOGIN_USER } from '../../store/actions';
+
 
 function Copyright() {
   return (
@@ -75,17 +77,14 @@ export default function Login() {
     history.push('/home')
   }
 
-  const LOGIN_USER = (user) => {
-    dispatch({
-      type: 'LOGIN',
-      userLoggedIn: user
-    })
+  const loginUser = (user) => {
+    dispatch(LOGIN_USER(user))
   }
 
   const submitForm = async () => {
     try {
       const user = await Auth.signIn(email, password)
-      LOGIN_USER(user)
+      loginUser(user)
       return true;
     } catch (e) {
       setErrorMessaging(e.message);

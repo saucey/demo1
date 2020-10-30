@@ -3,14 +3,19 @@ import ReactDOM from 'react-dom'
 import Amplify from 'aws-amplify'
 import './index.css'
 import { BrowserRouter as Router } from 'react-router-dom'
-import { createStore } from 'redux'
+import {  createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import App from './App'
 import config from './config'
 import * as serviceWorker from './serviceWorker'
-import Reducer from './reducer'
+import Reducer from './store/reducer'
+import { createEpicMiddleware } from 'redux-observable'
+import {rootEpic} from './store/epics'
 
-const store = createStore(Reducer)
+const observableMiddleware = createEpicMiddleware();
+const store = createStore(Reducer, applyMiddleware(observableMiddleware))
+
+observableMiddleware.run(rootEpic);
 
 Amplify.configure({
   Auth: {

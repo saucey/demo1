@@ -7,14 +7,16 @@ import getlistSectors from '../../api/sectors'
 const Sectors = () => {
 
   const dispatch = useDispatch()
+
   const listSectors = useSelector((state) => state);
-  
+
+  // console.log(listSectors, 'listSectors');
+
   useEffect(() => {
-    const data2 = getlistSectors();
-    data2.then(res => {
-      console.log(res, 'res')
-      GET_SECTORS(res.data.listSectors)
-    })
+    // const data2 = getlistSectors();
+    // data2.then(res => {
+    //   GET_SECTORS(res.data.listSectors)
+    // })
   })
 
   const GET_SECTORS = (sectors) => {
@@ -23,13 +25,21 @@ const Sectors = () => {
       listSectors: sectors
     })
   }
+
+  const ping = () => {
+    dispatch({ type: 'PING' });
+  }
   
   return (
     <div>
       <h1>
         Sectors Pages
+         <button onClick={ping}>DISPATCH THE PING</button>
       </h1>
     </div>
   )
+
+
 }
+
 export default Layout(Sectors)
