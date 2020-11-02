@@ -7,6 +7,7 @@ const Authorization = WrappedComponent => {
 
     const userLoggedIn = useSelector((state) => state.userLoggedIn);
     const isAllowed = userLoggedIn && userLoggedIn.loggedIn;
+    // const isAllowed = true; 
 
     return (
       <div>

@@ -1,11 +1,13 @@
 const initState = {
   userLoggedIn: null,
-  listSectors: null,
+  listSectors: [],
   epic: null
 }
 
 const Reducer = (state = initState, action) => {
-  console.log(action, 'the actions here!!!')
+
+  console.log(action, 'action called')
+  
   switch (action.type) {
     case 'LOGIN':
       return {
@@ -19,10 +21,10 @@ const Reducer = (state = initState, action) => {
         userLoggedIn: action.userLoggedIn
       }
     
-    case 'LIST_SECTORS':
+    case 'INSERT_SECTORS':
       return {
         ...state,
-        listSectors: action.listSectors
+        listSectors: [...action.listSectors]
       }
     
     case 'EPIC':

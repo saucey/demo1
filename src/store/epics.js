@@ -1,13 +1,25 @@
 import { ofType } from 'redux-observable';
 import { combineEpics } from 'redux-observable';
-import { delay, mapTo } from 'rxjs/operators';
+import { mergeMap, map, shareReplay} from 'rxjs/operators';
+import { from} from 'rxjs';
+import getlistSectors from '../api/sectors'
+import { INSERT_SECTORS, TRANSFORM_SECTORS } from './actions'
 
-const pingEpic = action$ => action$.pipe(
-  ofType('PING'),
-  delay(1000), // Asynchronously wait 1000ms then continue
-  mapTo({ type: 'EPIC' })
+const getSectors = action$ => action$.pipe(
+  ofType('GET_SECTORS'),
+  mergeMap(action =>
+    from(getlistSectors()).pipe(
+      map(response => INSERT_SECTORS(response.data.listSectors))
+    ))
+);
+
+const transformSectors = action$ => action$.pipe(
+  ofType('TRANSFORM_SECTORS'),
+  map(action => {
+    return INSERT_SECTORS(action.listSectors)
+  })
 );
 
 export const rootEpic = combineEpics(
-    pingEpic,
+    getSectors, transformSectors
 );

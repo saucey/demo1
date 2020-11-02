@@ -13,3 +13,17 @@ export const LOGOUT_USER = () => {
         userLoggedIn: null
     }
 }
+
+export const INSERT_SECTORS = (sectors) => {
+    return {
+        type: 'INSERT_SECTORS',
+        listSectors: sectors
+    }
+};
+
+export const TRANSFORM_SECTORS = (sectors) => {
+    return {
+        type: 'TRANSFORM_SECTORS',
+        listSectors: sectors
+    }
+};

@@ -2,44 +2,52 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { API, graphqlOperation } from 'aws-amplify';
 import Layout from '../../layouts/navbar'
-import getlistSectors from '../../api/sectors' 
+import { DataGrid } from '@material-ui/data-grid';
+
 
 const Sectors = () => {
-
+  
   const dispatch = useDispatch()
-
-  const listSectors = useSelector((state) => state);
-
-  // console.log(listSectors, 'listSectors');
-
-  useEffect(() => {
-    // const data2 = getlistSectors();
-    // data2.then(res => {
-    //   GET_SECTORS(res.data.listSectors)
-    // })
-  })
-
-  const GET_SECTORS = (sectors) => {
-    dispatch({
-      type: 'LIST_SECTORS',
-      listSectors: sectors
-    })
-  }
-
-  const ping = () => {
-    dispatch({ type: 'PING' });
+  
+  const getSectors = () => {
+    dispatch({ type: 'GET_SECTORS' });
   }
   
+  const listSectors = useSelector((state) => state.listSectors);
+  
+  useEffect(() => {
+    getSectors();
+  }, [])
+  
+  const columns = [
+    { field: 'idsectors', headerName: 'Sector ID', width: 100 },
+    { field: 'sector', headerName: 'Sector', width: 100 },
+    { field: 'short', headerName: 'Short', width: 100 },
+    {
+      field: 'user',
+      headerName: 'User',
+      width: 100,
+    },
+    {
+      field: 'active_from',
+      headerName: 'Active From',
+      description: 'This column has a value getter and is not sortable.',
+      sortable: false,
+      width: 150,
+    },
+  ];
+  
+  if (listSectors !== null) {
+    listSectors.map((s, i)=> s['id'] = i+1);
+  }
+
   return (
-    <div>
-      <h1>
-        Sectors Pages
-         <button onClick={ping}>DISPATCH THE PING</button>
-      </h1>
+    <div style={{ height: 400, width: '100%' }}>
+      <DataGrid rows={listSectors} columns={columns} pageSize={5} checkboxSelection />
     </div>
-  )
-
-
-}
-
-export default Layout(Sectors)
+    )
+  }
+  
+  export default Layout(Sectors)
+  
+  
