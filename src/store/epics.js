@@ -9,7 +9,11 @@ const getSectors = action$ => action$.pipe(
   ofType('GET_SECTORS'),
   mergeMap(action =>
     from(getlistSectors()).pipe(
-      map(response => INSERT_SECTORS(response.data.listSectors))
+      map(response => {
+        response.data.listSectors.map((s, i)=> s['id'] = i+1);
+        return response.data.listSectors
+      }),
+      map(listSectors => INSERT_SECTORS(listSectors))
     ))
 );
 

@@ -36,10 +36,6 @@ const Sectors = () => {
       width: 150,
     },
   ];
-  
-  if (listSectors !== null) {
-    listSectors.map((s, i)=> s['id'] = i+1);
-  }
 
   return (
     <div style={{ height: 400, width: '100%' }}>
