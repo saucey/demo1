@@ -3,7 +3,34 @@ import { useDispatch, useSelector } from 'react-redux'
 import { API, graphqlOperation } from 'aws-amplify';
 import Layout from '../../layouts/navbar'
 import { DataGrid } from '@material-ui/data-grid';
+import Button from '@material-ui/core/Button';
+import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
+import AddBoxIcon from '@material-ui/icons/AddBox';
+import { createMuiTheme, withStyles, makeStyles, ThemeProvider } from '@material-ui/core/styles';
+import { green, purple } from '@material-ui/core/colors';
+import CreateIcon from '@material-ui/icons/Create';
 
+const theme = createMuiTheme({
+  palette: {
+    primary: green,
+  },
+});
+
+const ColorButton = withStyles((theme) => ({
+  root: {
+    color: theme.palette.getContrastText(green[500]),
+    backgroundColor: green[500],
+    '&:hover': {
+      backgroundColor: green[700],
+    },
+  },
+}))(Button);
+
+const useStyles = makeStyles((theme) => ({
+  margin: {
+    marginBottom: '20px'
+  },
+}));
 
 const Sectors = () => {
   
@@ -35,10 +62,45 @@ const Sectors = () => {
       sortable: false,
       width: 150,
     },
+  {
+    field: 'action_edit',
+    headerName: 'Edit',
+    sortable: false,
+    renderCell: (params) => (
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          style={{ marginLeft: 16 }}
+        >
+        <CreateIcon />
+      </Button>
+    ),
+    },
+  {
+    field: 'action_delete',
+    headerName: 'Delete',
+    sortable: false,
+    renderCell: (params) => (
+        <Button
+          variant="contained"
+          color="secondary"
+          size="small"
+          style={{ marginLeft: 16 }}
+        >
+        <DeleteForeverOutlinedIcon />
+      </Button>
+    ),
+  },
   ];
+
+  const classes = useStyles();
 
   return (
     <div style={{ height: 400, width: '100%' }}>
+      <ColorButton  variant="contained" color="primary"  className={classes.margin}>
+        <AddBoxIcon style={{ color: '#fff' }}/>
+      </ColorButton>
       <DataGrid rows={listSectors} columns={columns} pageSize={5} checkboxSelection />
     </div>
     )
