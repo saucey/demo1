@@ -22,6 +22,7 @@ import { Auth } from 'aws-amplify';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux'
 import { LOGOUT_USER } from '../store/actions'
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 
 const drawerWidth = 240
 
@@ -137,7 +138,6 @@ const MainLayout = WrappedComponent => {
             <div className={classes.logoutBtn}>
               <Button onClick={handleLogout} color="inherit">Logout</Button>
             </div>
-
           </Toolbar>
         </AppBar>
 
