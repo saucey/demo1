@@ -149,7 +149,7 @@ const Sectors = () => {
       <ColorButton onClick={handleOpen} variant="contained" color="primary" className={classes.margin}>
         <AddBoxIcon style={{ color: '#fff' }}/>
       </ColorButton>
-            <Modal
+      <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         className={classes.modal}
