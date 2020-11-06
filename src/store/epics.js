@@ -2,8 +2,8 @@ import { ofType } from 'redux-observable';
 import { combineEpics } from 'redux-observable';
 import { mergeMap, map, shareReplay} from 'rxjs/operators';
 import { from} from 'rxjs';
-import getlistSectors from '../api/sectors'
-import { INSERT_SECTORS, TRANSFORM_SECTORS } from './actions'
+import {getlistSectors, createSector} from '../api/sectors'
+import { INSERT_SECTORS, TRANSFORM_SECTORS, DEBUG } from './actions'
 
 const getSectors = action$ => action$.pipe(
   ofType('GET_SECTORS'),
@@ -17,6 +17,20 @@ const getSectors = action$ => action$.pipe(
     ))
 );
 
+const createListSector = action$ => action$.pipe(
+  ofType('CREATE_SECTOR'),
+  mergeMap(action =>
+    from(createSector(action.sector)).pipe(
+      map(response => {
+        console.log(action, 'whats the action')
+        console.log(response, 'after create!!!!')
+        // response.data.listSectors.map((s, i)=> s['id'] = i+1);
+        // return response.data.listSectors
+      }),
+      map(listSectors => DEBUG())
+    ))
+);
+
 const transformSectors = action$ => action$.pipe(
   ofType('TRANSFORM_SECTORS'),
   map(action => {
@@ -25,5 +39,5 @@ const transformSectors = action$ => action$.pipe(
 );
 
 export const rootEpic = combineEpics(
-    getSectors, transformSectors
+    getSectors, transformSectors, createListSector
 );

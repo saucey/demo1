@@ -9,7 +9,7 @@ import AddBoxIcon from '@material-ui/icons/AddBox';
 import { createMuiTheme, withStyles, makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import { green, purple } from '@material-ui/core/colors';
 import CreateIcon from '@material-ui/icons/Create';
-
+import SectorForm from '../../components/sectorForm'
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
@@ -53,7 +53,7 @@ const SectorsModal = () => {
         }}
       >
         <Fade in={open}>
-          <div className={classes.paper}>
+        <div className={classes.paper}>
             <h2 id="transition-modal-title">Transition modal</h2>
             <p id="transition-modal-description">react-transition-group animates me.</p>
           </div>
@@ -79,11 +79,19 @@ const Sectors = () => {
   const getSectors = () => {
     dispatch({ type: 'GET_SECTORS' });
   }
+
+  const createSector = () => {
+    dispatch({
+      type: 'CREATE_SECTOR',
+      sector: {sector: 'TEST', short: 'TEST', emailAddress: 'leo@test'}
+    })
+  }
   
   const listSectors = useSelector((state) => state.listSectors);
   
   useEffect(() => {
     getSectors();
+    createSector();
   }, [])
   
   const columns = [
@@ -164,8 +172,7 @@ const Sectors = () => {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <h2 id="transition-modal-title">Transition modal</h2>
-            <p id="transition-modal-description">react-transition-group animates me.</p>
+            <SectorForm/>
           </div>
         </Fade>
       </Modal>

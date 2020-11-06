@@ -27,3 +27,9 @@ export const TRANSFORM_SECTORS = (sectors) => {
         listSectors: sectors
     }
 };
+
+export const DEBUG = () => {
+    return {
+        type: 'DEBUG',
+    }
+}

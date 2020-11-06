@@ -56,6 +56,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Login() {
   const { register, handleSubmit, errors } = useForm({ mode: 'onSubmit', reValidateMode: 'onSubmit' })
   const classes = useStyles()
+  const history = useHistory();
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -63,7 +64,6 @@ export default function Login() {
 
   const userLoggedIn = useSelector((state) => state.userLoggedIn);
 
-  const history = useHistory();
 
   useEffect(() => {
     if (userLoggedIn !== null) {
