@@ -9,8 +9,6 @@ export const listSectorsQuery = `query listSectors {
 	}
 }`;
 
-
-
 export const createSectorQuery = (sector) => {
 	return `mutation createSector {
 		createSector(
@@ -28,3 +26,20 @@ export const createSectorQuery = (sector) => {
 			}
 		}`;
 	}
+
+	export const  deleteSectorQuery = (sectorId) => {
+		return `mutation delete {
+			deleteSector(
+				input: {
+					idsectors: ${sectorId}
+				}
+				)
+				{
+					idsectors
+					sector
+					short
+					active_from
+					user
+				}
+			}`;
+		}

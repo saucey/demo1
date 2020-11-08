@@ -21,6 +21,13 @@ export const INSERT_SECTORS = (sectors) => {
     }
 };
 
+export const INSERT_SECTOR = (sectors) => {
+    return {
+        type: 'INSERT_SECTOR',
+        listSectors: sectors
+    }
+};
+
 export const TRANSFORM_SECTORS = (sectors) => {
     return {
         type: 'TRANSFORM_SECTORS',

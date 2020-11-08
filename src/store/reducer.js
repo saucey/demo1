@@ -27,6 +27,12 @@ const Reducer = (state = initState, action) => {
         listSectors: [...action.listSectors]
       }
     
+    case 'INSERT_SECTOR':
+      return {
+        ...state,
+        listSectors: [...state.listSectors, action.listSectors]
+      }
+    
     case 'EPIC':
       return {
         ...state,

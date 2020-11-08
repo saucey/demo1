@@ -2,16 +2,31 @@ import React, {useState} from 'react'
 import { useForm } from 'react-hook-form'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
+import { useDispatch, useSelector } from 'react-redux'
 
-const SectorForm = () => {
+const SectorForm = (props) => {
     
     const { register, handleSubmit, errors } = useForm({ mode: 'onSubmit', reValidateMode: 'onSubmit' })
-    const [sector, setSector] = useState('')
-    const [short, setShort] = useState('')
+    const userLoggedIn = useSelector((state) => state.userLoggedIn);
+    const [sector, setSector] = useState(props.sector.sector !== undefined ? props.sector.sector : '')
+    const [short, setShort] = useState(props.sector.short !== undefined ? props.sector.short : '')
     const [errorMessaging, setErrorMessaging] = useState(null)
-    const onSubmit = data => {
-        // history.push('/home')
+
+    const dispatch = useDispatch();
+
+    const createSector = (sector) => {
+      dispatch({
+        type: 'CREATE_SECTOR',
+        sector: sector
+      })
     }
+
+    const onSubmit = data => {
+        createSector(data)
+        console.log(data)
+    }
+
+    
     
     return (
         <form
