@@ -59,7 +59,6 @@ export default function LoginOld () {
 
   useEffect(() => {
     ValidatorForm.addValidationRule('isCustom', (value) => {
-      console.log(error, 'error in validation rule!!!!')
       // if(value !== '') {
       return error === null
       // }
@@ -71,9 +70,7 @@ export default function LoginOld () {
     try {
       const user = await Auth.signIn(email, password)
       LOGIN_USER(user)
-      console.log(user, 'users')
     } catch (e) {
-      console.log(e, 'errors')
       setError(e)
     }
   }

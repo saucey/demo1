@@ -26,20 +26,41 @@ export const createSectorQuery = (sector) => {
 			}
 		}`;
 	}
-
-	export const  deleteSectorQuery = (sectorId) => {
-		return `mutation delete {
-			deleteSector(
-				input: {
-					idsectors: ${sectorId}
-				}
-				)
-				{
-					idsectors
-					sector
-					short
-					active_from
-					user
-				}
-			}`;
-		}
+	
+export const  deleteSectorQuery = (sectorId) => {
+	return `mutation delete {
+		deleteSector(
+			input: {
+				idsectors: ${sectorId}
+			}
+			)
+			{
+				idsectors
+				sector
+				short
+				active_from
+				user
+			}
+		}`;
+	}
+		
+		
+		
+export const updateSectorQuery = (sector) => {
+	return `mutation updateSector{
+		updateSector(
+			input: {
+				idsectors: ${sector.idsectors}
+				sector: "${sector.sector}"
+				short: "${sector.short}"
+				user: "${sector.emailAddress}"
+			}
+			) {
+				idsectors
+				sector
+				short
+				active_from
+				user
+			}
+		}`;
+	}

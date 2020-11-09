@@ -2,7 +2,7 @@ import { ofType } from 'redux-observable';
 import { combineEpics } from 'redux-observable';
 import { mergeMap, map, shareReplay} from 'rxjs/operators';
 import { from} from 'rxjs';
-import {getlistSectors, createSector, deleteSector} from '../api/sectors'
+import {getlistSectors, createSector, deleteSector, updateSector} from '../api/sectors'
 import { INSERT_SECTORS, INSERT_SECTOR, TRANSFORM_SECTORS, DEBUG } from './actions'
 
 const getSectors = action$ => action$.pipe(
@@ -22,7 +22,6 @@ const createListSector = action$ => action$.pipe(
   mergeMap(action =>
     from(createSector(action.sector)).pipe(
       map(response => {
-        console.log(response, 'res!!!!')
         response.data.createSector['id'] = response.data.createSector.idsectors;
         return response.data.createSector;
       }),
@@ -30,18 +29,34 @@ const createListSector = action$ => action$.pipe(
     ))
 )
 
-const deleteListSector = (action$,state$) => action$.pipe(
+const updateListSector = (action$, state$) => action$.pipe(
+  ofType('UPDATE_SECTOR'),
+  mergeMap(action =>
+    from(updateSector(action.sector)).pipe(
+      map(response => {
+        const updatedSector = response.data.updateSector;
+        updatedSector['id'] = updatedSector.idsectors;
+        const listSectors = state$.value.listSectors;
+        const updatedSectors = listSectors.map(obj => obj.idsectors === updatedSector.idsectors ? { ...obj, ...updatedSector } : obj);
+        return updatedSectors;
+      }),
+      map(updatedSector => INSERT_SECTORS(updatedSector))
+    ))
+)
+
+const deleteListSector = (action$, state$) => action$.pipe(
   ofType('DELETE_SECTOR'),
   mergeMap(action =>
     from(deleteSector(action.sectorId)).pipe( 
       map(response => {
-        console.log(response.data.deleteSector, 'delete sectors')
         const newSectors = state$.value.listSectors.filter(val => val.idsectors !== response.data.deleteSector.idsectors);
         return newSectors;
       }),
       map(transformedResponse => INSERT_SECTORS(transformedResponse))
     ))
 )
+
+
 
 const transformSectors = action$ => action$.pipe(
   ofType('TRANSFORM_SECTORS'),
@@ -51,5 +66,5 @@ const transformSectors = action$ => action$.pipe(
 );
 
 export const rootEpic = combineEpics(
-    getSectors, transformSectors, createListSector, deleteListSector
+    getSectors, transformSectors, createListSector, updateListSector, deleteListSector
 );

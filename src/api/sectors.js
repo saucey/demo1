@@ -1,4 +1,4 @@
-import { listSectorsQuery, createSectorQuery, deleteSectorQuery } from '../graphql/sectors'
+import { listSectorsQuery, createSectorQuery, deleteSectorQuery, updateSectorQuery } from '../graphql/sectors'
 import { API, graphqlOperation } from 'aws-amplify';
 
 const getlistSectors = async () => {
@@ -24,4 +24,4 @@ const updateSector = async (sector) => {
 
 
 
-export {getlistSectors, createSector, deleteSector}
+export {getlistSectors, createSector, deleteSector, updateSector}

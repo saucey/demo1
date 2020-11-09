@@ -87,6 +87,7 @@ const SectorsModal = () => {
     }
     
     const listSectors = useSelector((state) => state.listSectors);
+    const userLoggedIn = useSelector((state) => state.userLoggedIn);
     const [sector, setSector] = useState(null);
     
     useEffect(() => {
@@ -148,7 +149,6 @@ const SectorsModal = () => {
         const [open, setOpen] = React.useState(false);
         
         const handleOpen = (sector) => {
-          console.log(sector);
           setSector(sector)
           setOpen(true);
         };
@@ -159,7 +159,8 @@ const SectorsModal = () => {
         
         return (
           <div style={{ height: 400, width: '100%' }}>
-          <AddSectorBtn onClick={handleOpen} variant="contained" color="primary" className={classes.margin}>
+            <AddSectorBtn onClick={() => handleOpen(null)} variant="contained" color="primary" className={classes.margin}>
+              
           <AddBoxIcon style={{ color: '#fff' }}/>
           </AddSectorBtn>
           <Modal
@@ -175,12 +176,13 @@ const SectorsModal = () => {
           }}
           >
           <Fade in={open}>
-          <div className={classes.paper}>
-          <SectorForm sector={sector} />
+                <div className={classes.paper}>
+                  <SectorForm sect={sector} />
           </div>
           </Fade>
-          </Modal>
-          <DataGrid rows={listSectors} columns={columns} pageSize={10} checkboxSelection />
+            </Modal>
+            
+          <DataGrid id="_idsectors" rows={listSectors} columns={columns} pageSize={10} checkboxSelection />
           </div>
           )
         }
