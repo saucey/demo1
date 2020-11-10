@@ -1,6 +1,6 @@
   
-
-export const LOGIN_USER = (user) => {
+  
+  export const LOGIN_USER = (user) => {
     return {
         type: 'LOGIN',
         userLoggedIn: user
@@ -12,6 +12,10 @@ export const LOGOUT_USER = () => {
         type: 'LOGOUT',
         userLoggedIn: null
     }
+}
+
+export const GET_SECTORS = () => {
+    return { type: 'GET_SECTORS' };
 }
 
 export const INSERT_SECTORS = (sectors) => {
@@ -35,8 +39,17 @@ export const TRANSFORM_SECTORS = (sectors) => {
     }
 };
 
-export const DEBUG = () => {
+export const CLOSE_MODAL = (isOpen) => {
     return {
-        type: 'DEBUG',
+        type: 'CLOSE_MODAL',
+        modalOpen: isOpen
     }
 }
+
+export const DELETE_SECTOR = (sectorId) => {
+    return {
+        type: 'DELETE_SECTOR',
+        sectorId
+    }
+}
+

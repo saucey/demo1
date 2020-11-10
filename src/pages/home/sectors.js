@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { API, graphqlOperation } from 'aws-amplify';
+import { API, graphqlOperation   } from 'aws-amplify';
 import Layout from '../../layouts/navbar'
 import { DataGrid } from '@material-ui/data-grid';
 import Button from '@material-ui/core/Button';
@@ -13,6 +13,8 @@ import SectorForm from '../../components/sectorForm'
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
+import { CLOSE_MODAL, DELETE_SECTOR, GET_SECTORS } from '../../store/actions'
+
 
 const theme = createMuiTheme({
   palette: {
@@ -76,19 +78,40 @@ const SectorsModal = () => {
     const dispatch = useDispatch()
     
     const getSectors = () => {
-      dispatch({ type: 'GET_SECTORS' });
+      dispatch(GET_SECTORS());
     }
     
     const deleteSector = (sectorId) => {
-      dispatch({
-        type: 'DELETE_SECTOR',
-        sectorId
-      })
+      dispatch(DELETE_SECTOR(sectorId))
+    }
+    
+    const modalOpen = (close) => {
+      dispatch(CLOSE_MODAL(close))
     }
     
     const listSectors = useSelector((state) => state.listSectors);
-    const userLoggedIn = useSelector((state) => state.userLoggedIn);
+    // const userLoggedIn = useSelector((state) => state.userLoggedIn);
+    
+    const isModalOpen = useSelector((state) => state.modalOpen);
+    
     const [sector, setSector] = useState(null);
+    const [open, setOpen] = useState(false);
+    
+    const classes = useStyles();
+    
+    const handleOpen = (sector) => {
+      setSector(sector)
+      setOpen(true);
+    };
+    
+    const handleClose = () => {
+      setOpen(false);
+    };
+    
+    if (isModalOpen === true) {
+      modalOpen(!true);
+      setOpen(false);
+    }
     
     useEffect(() => {
       getSectors();
@@ -145,22 +168,11 @@ const SectorsModal = () => {
           },
         ];
         
-        const classes = useStyles();
-        const [open, setOpen] = React.useState(false);
-        
-        const handleOpen = (sector) => {
-          setSector(sector)
-          setOpen(true);
-        };
-        
-        const handleClose = () => {
-          setOpen(false);
-        };
         
         return (
           <div style={{ height: 400, width: '100%' }}>
-            <AddSectorBtn onClick={() => handleOpen(null)} variant="contained" color="primary" className={classes.margin}>
-              
+          <AddSectorBtn onClick={() => handleOpen(null)} variant="contained" color="primary" className={classes.margin}>
+          
           <AddBoxIcon style={{ color: '#fff' }}/>
           </AddSectorBtn>
           <Modal
@@ -168,6 +180,7 @@ const SectorsModal = () => {
           aria-describedby="transition-modal-description"
           className={classes.modal}
           open={open}
+          style={{width: '400px', margin: '0 auto'}}
           onClose={handleClose}
           closeAfterTransition
           BackdropComponent={Backdrop}
@@ -176,13 +189,13 @@ const SectorsModal = () => {
           }}
           >
           <Fade in={open}>
-                <div className={classes.paper}>
-                  <SectorForm sect={sector} />
+          <div className={classes.paper}>
+          <SectorForm sect={sector} />
           </div>
           </Fade>
-            </Modal>
-            
-          <DataGrid id="_idsectors" rows={listSectors} columns={columns} pageSize={10} checkboxSelection />
+          </Modal>
+          
+          <DataGrid rows={listSectors} columns={columns} pageSize={10} checkboxSelection />
           </div>
           )
         }

@@ -51,21 +51,21 @@ const SectorForm = ({sect}) => {
     id="sector"
     label="Sector"
     name="sector"
+    fullWidth={true}
     autoComplete="sector"
     autoFocus
     inputRef={register({ required: true })}
     error={errors.sector?.type === 'required'}
     />
-    <p>
     {errors.sector?.type === 'required' && <span>This field is required</span>}
-    </p>
     <TextField
     value={short}
     onChange={(e) => setShort(e.target.value)}
     variant="outlined"
     margin="normal"
     fullWidth
-    name="short"
+        name="short"
+        fullWidth={true}
     label="Short"
     type="short"
     id="short"
@@ -91,9 +91,7 @@ const SectorForm = ({sect}) => {
     type="hidden"
     id="emailAddress"
     />
-    <p>
     {errors.short?.type === 'required' && <span>This field is required</span>}
-    </p>
     <Button
     type="submit"
     fullWidth

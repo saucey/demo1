@@ -1,10 +1,16 @@
+import { actionRow } from "aws-amplify"
+
 const initState = {
   userLoggedIn: null,
   listSectors: [],
-  epic: null
+  epic: null,
+  modalOpen: false
 }
 
 const Reducer = (state = initState, action) => {
+
+  console.log(state, 'state in reducer')
+  console.log(action, 'action in reducer')
 
   switch (action.type) {
     case 'LOGIN':
@@ -31,10 +37,10 @@ const Reducer = (state = initState, action) => {
         listSectors: [...state.listSectors, action.listSectors]
       }
     
-    case 'EPIC':
+    case 'CLOSE_MODAL':
       return {
         ...state,
-        epic: true
+        modalOpen: action.modalOpen
       }
 
       // you can have as many case statements as you need

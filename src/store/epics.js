@@ -1,9 +1,9 @@
 import { ofType } from 'redux-observable';
 import { combineEpics } from 'redux-observable';
-import { mergeMap, map, shareReplay} from 'rxjs/operators';
+import { mergeMap, map, shareReplay, switchMap} from 'rxjs/operators';
 import { from} from 'rxjs';
 import {getlistSectors, createSector, deleteSector, updateSector} from '../api/sectors'
-import { INSERT_SECTORS, INSERT_SECTOR, TRANSFORM_SECTORS, DEBUG } from './actions'
+import { INSERT_SECTORS, INSERT_SECTOR, TRANSFORM_SECTORS, DEBUG, CLOSE_MODAL } from './actions'
 
 const getSectors = action$ => action$.pipe(
   ofType('GET_SECTORS'),
@@ -25,7 +25,10 @@ const createListSector = action$ => action$.pipe(
         response.data.createSector['id'] = response.data.createSector.idsectors;
         return response.data.createSector;
       }),
-      map(listSector => INSERT_SECTOR(listSector))
+      switchMap(listSector => [
+        INSERT_SECTOR(listSector),
+        CLOSE_MODAL(true)
+      ])
     ))
 )
 
@@ -40,7 +43,10 @@ const updateListSector = (action$, state$) => action$.pipe(
         const updatedSectors = listSectors.map(obj => obj.idsectors === updatedSector.idsectors ? { ...obj, ...updatedSector } : obj);
         return updatedSectors;
       }),
-      map(updatedSector => INSERT_SECTORS(updatedSector))
+      switchMap(updatedSector => [
+        INSERT_SECTORS(updatedSector),
+        CLOSE_MODAL(true)
+      ])
     ))
 )
 
@@ -55,8 +61,6 @@ const deleteListSector = (action$, state$) => action$.pipe(
       map(transformedResponse => INSERT_SECTORS(transformedResponse))
     ))
 )
-
-
 
 const transformSectors = action$ => action$.pipe(
   ofType('TRANSFORM_SECTORS'),
