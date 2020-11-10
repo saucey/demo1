@@ -46,9 +46,7 @@ const AddSectorBtn = withStyles((theme) => ({
     }
     
     const listSectors = useSelector((state) => state.listSectors);
-    
     const [sector, setSector] = useState(null);
-    
     const classes = useStyles();
     
     const handleOpen = (sector) => {
@@ -110,7 +108,6 @@ const AddSectorBtn = withStyles((theme) => ({
             ),
           },
         ];
-        
         
         return (
           <div style={{ height: 400, width: '100%' }}>
