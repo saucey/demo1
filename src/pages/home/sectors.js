@@ -1,103 +1,33 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { API, graphqlOperation   } from 'aws-amplify';
 import Layout from '../../layouts/navbar'
 import { DataGrid } from '@material-ui/data-grid';
 import Button from '@material-ui/core/Button';
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
 import AddBoxIcon from '@material-ui/icons/AddBox';
-import { createMuiTheme, withStyles, makeStyles, ThemeProvider } from '@material-ui/core/styles';
-import { green, purple } from '@material-ui/core/colors';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { green } from '@material-ui/core/colors';
 import CreateIcon from '@material-ui/icons/Create';
 import SectorForm from '../../components/sectorForm'
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
 import { CLOSE_MODAL, DELETE_SECTOR, GET_SECTORS } from '../../store/actions'
+import { AppModal } from '../../components/modal'
 
-
-const theme = createMuiTheme({
-  palette: {
-    primary: green,
-  },
-});
 
 const useStyles = makeStyles((theme) => ({
   margin: {
     marginBottom: '20px'
   },
-  modal: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: '0 auto',
-    maxWidth: '400px',
-  },
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  },
 }));
 
-const AppModal = (props) => {
-  console.log(props, 'and this is')
-  
-    useEffect(() => {
-    }, [])
-    
-    const isNewModalOpen = useSelector((state) => state.modalOpen);
-    const [open, setOpen] = useState(false);
-    const classes = useStyles();
-    const dispatch = useDispatch()
-    
-    const modalOpen = (close) => {
-      dispatch(CLOSE_MODAL(close))
-    }
-    
-    if (isNewModalOpen) {
-      setOpen(true);
-      modalOpen(!true);
-    }
-    
-    console.log(isNewModalOpen, 'isNewModalOpen')
-    
-    const handleClose = () => {
-      setOpen(false);
-    };
-    
-    return (
-      <Modal
-      aria-labelledby="transition-modal-title"
-      aria-describedby="transition-modal-description"
-      className={classes.modal}
-      open={open}
-      onClose={handleClose}
-      closeAfterTransition
-      BackdropComponent={Backdrop}
-      BackdropProps={{
-        timeout: 500,
-      }}
-      >
-      <Fade in={open}>
-      <div className={classes.paper}>
-            {props.children}
-      </div>
-      </Fade>
-      </Modal>
-      )
-  }
-  
-  const AddSectorBtn = withStyles((theme) => ({
-    root: {
-      color: theme.palette.getContrastText(green[500]),
-      backgroundColor: green[500],
-      '&:hover': {
-        backgroundColor: green[700],
-      },
+const AddSectorBtn = withStyles((theme) => ({
+  root: {
+    color: theme.palette.getContrastText(green[500]),
+    backgroundColor: green[500],
+    '&:hover': {
+      backgroundColor: green[700],
     },
-  }))(Button);
+  },
+}))(Button);
   
   const Sectors = () => {
     
@@ -116,29 +46,15 @@ const AppModal = (props) => {
     }
     
     const listSectors = useSelector((state) => state.listSectors);
-    // const userLoggedIn = useSelector((state) => state.userLoggedIn);
-    
-    // const isModalOpen = useSelector((state) => state.modalOpen);
     
     const [sector, setSector] = useState(null);
-    const [open, setOpen] = useState(false);
     
     const classes = useStyles();
     
     const handleOpen = (sector) => {
       setSector(sector)
-      setOpen(true);
       modalOpen(true);
     };
-    
-    const handleClose = () => {
-      setOpen(false);
-    };
-    
-    // if (isModalOpen === true) {
-    //   modalOpen(!true);
-    //   setOpen(false);
-    // }
     
     useEffect(() => {
       getSectors();
