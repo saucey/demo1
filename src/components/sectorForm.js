@@ -4,13 +4,16 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import { useDispatch, useSelector } from 'react-redux'
 
-const SectorForm = ({sect}) => {
+const SectorForm = (sect) => {
+
+  console.log(sect, 'sect')
+  
   const { register, handleSubmit, errors } = useForm({ mode: 'onSubmit', reValidateMode: 'onSubmit' })
   const userLoggedIn = useSelector((state) => state.userLoggedIn);
   
-  const [sector, setSector] = useState(sect !== null ? sect.sector : '')
-  const [short, setShort] = useState(sect !== null ? sect.short : '')
-  const [idsectors, setIdsectors] = useState(sect !== null ? sect.idsectors : '')
+  const [sector, setSector] = useState(sect.sector !== null ? sect.sector.sector : '')
+  const [short, setShort] = useState(sect.sector !== null ? sect.sector.short : '')
+  const [idsectors, setIdsectors] = useState(sect.sector !== null ? sect.sector.idsectors : '')
   const [emailAddress, setEmailAddress] = useState(userLoggedIn && userLoggedIn.username !== undefined ? userLoggedIn.username : '')
   
   const [errorMessaging, setErrorMessaging] = useState(null)
@@ -32,7 +35,7 @@ const SectorForm = ({sect}) => {
   }
   
   const onSubmit = data => {  
-    (sect !== null) ? updateSector(data) : createSector(data);
+    (sect.sector !== null) ? updateSector(data) : createSector(data);
   }
   
   

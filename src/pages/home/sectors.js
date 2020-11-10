@@ -30,6 +30,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    margin: '0 auto',
+    maxWidth: '400px',
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
@@ -39,28 +41,52 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SectorsModal = () => {
-  return (
-    <Modal
-    aria-labelledby="transition-modal-title"
-    aria-describedby="transition-modal-description"
-    className={classes.modal}
-    open={open}
-    onClose={handleClose}
-    closeAfterTransition
-    BackdropComponent={Backdrop}
-    BackdropProps={{
-      timeout: 500,
-    }}
-    >
-    <Fade in={open}>
-    <div className={classes.paper}>
-    <h2 id="transition-modal-title">Transition modal</h2>
-    <p id="transition-modal-description">react-transition-group animates me.</p>
-    </div>
-    </Fade>
-    </Modal>
-    )
+const AppModal = (props) => {
+  console.log(props, 'and this is')
+  
+    useEffect(() => {
+    }, [])
+    
+    const isNewModalOpen = useSelector((state) => state.modalOpen);
+    const [open, setOpen] = useState(false);
+    const classes = useStyles();
+    const dispatch = useDispatch()
+    
+    const modalOpen = (close) => {
+      dispatch(CLOSE_MODAL(close))
+    }
+    
+    if (isNewModalOpen) {
+      setOpen(true);
+      modalOpen(!true);
+    }
+    
+    console.log(isNewModalOpen, 'isNewModalOpen')
+    
+    const handleClose = () => {
+      setOpen(false);
+    };
+    
+    return (
+      <Modal
+      aria-labelledby="transition-modal-title"
+      aria-describedby="transition-modal-description"
+      className={classes.modal}
+      open={open}
+      onClose={handleClose}
+      closeAfterTransition
+      BackdropComponent={Backdrop}
+      BackdropProps={{
+        timeout: 500,
+      }}
+      >
+      <Fade in={open}>
+      <div className={classes.paper}>
+            {props.children}
+      </div>
+      </Fade>
+      </Modal>
+      )
   }
   
   const AddSectorBtn = withStyles((theme) => ({
@@ -92,7 +118,7 @@ const SectorsModal = () => {
     const listSectors = useSelector((state) => state.listSectors);
     // const userLoggedIn = useSelector((state) => state.userLoggedIn);
     
-    const isModalOpen = useSelector((state) => state.modalOpen);
+    // const isModalOpen = useSelector((state) => state.modalOpen);
     
     const [sector, setSector] = useState(null);
     const [open, setOpen] = useState(false);
@@ -102,16 +128,17 @@ const SectorsModal = () => {
     const handleOpen = (sector) => {
       setSector(sector)
       setOpen(true);
+      modalOpen(true);
     };
     
     const handleClose = () => {
       setOpen(false);
     };
     
-    if (isModalOpen === true) {
-      modalOpen(!true);
-      setOpen(false);
-    }
+    // if (isModalOpen === true) {
+    //   modalOpen(!true);
+    //   setOpen(false);
+    // }
     
     useEffect(() => {
       getSectors();
@@ -172,28 +199,12 @@ const SectorsModal = () => {
         return (
           <div style={{ height: 400, width: '100%' }}>
           <AddSectorBtn onClick={() => handleOpen(null)} variant="contained" color="primary" className={classes.margin}>
-          
           <AddBoxIcon style={{ color: '#fff' }}/>
           </AddSectorBtn>
-          <Modal
-          aria-labelledby="transition-modal-title"
-          aria-describedby="transition-modal-description"
-          className={classes.modal}
-          open={open}
-          style={{width: '400px', margin: '0 auto'}}
-          onClose={handleClose}
-          closeAfterTransition
-          BackdropComponent={Backdrop}
-          BackdropProps={{
-            timeout: 500,
-          }}
-          >
-          <Fade in={open}>
-          <div className={classes.paper}>
-          <SectorForm sect={sector} />
-          </div>
-          </Fade>
-          </Modal>
+
+            <AppModal>
+              <SectorForm sector={sector}/>
+            </AppModal>
           
           <DataGrid rows={listSectors} columns={columns} pageSize={10} checkboxSelection />
           </div>
