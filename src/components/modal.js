@@ -23,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const AppModal = (props) => {
-  console.log(props, 'and this is')
   
     useEffect(() => {
     }, [])
