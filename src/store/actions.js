@@ -46,6 +46,13 @@ export const CLOSE_MODAL = (isOpen) => {
     }
 }
 
+export const MODAL_MSG = (modalMsg) => {
+    return {
+        type: 'MODAL_MSG',
+        modalMsg
+    }
+}
+
 export const DELETE_SECTOR = (sectorId) => {
     return {
         type: 'DELETE_SECTOR',

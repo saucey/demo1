@@ -3,7 +3,7 @@ import { combineEpics } from 'redux-observable';
 import { mergeMap, map, shareReplay, switchMap} from 'rxjs/operators';
 import { from} from 'rxjs';
 import {getlistSectors, createSector, deleteSector, updateSector} from '../api/sectors'
-import { INSERT_SECTORS, INSERT_SECTOR, TRANSFORM_SECTORS, DEBUG, CLOSE_MODAL } from './actions'
+import { INSERT_SECTORS, INSERT_SECTOR, TRANSFORM_SECTORS, DEBUG, CLOSE_MODAL, MODAL_MSG } from './actions'
 
 const getSectors = action$ => action$.pipe(
   ofType('GET_SECTORS'),
@@ -27,7 +27,8 @@ const createListSector = action$ => action$.pipe(
       }),
       switchMap(listSector => [
         INSERT_SECTOR(listSector),
-        CLOSE_MODAL(true)
+        CLOSE_MODAL(!true),
+        MODAL_MSG('Sector was created successfully!')
       ])
     ))
 )
@@ -45,7 +46,8 @@ const updateListSector = (action$, state$) => action$.pipe(
       }),
       switchMap(updatedSector => [
         INSERT_SECTORS(updatedSector),
-        CLOSE_MODAL(true)
+        CLOSE_MODAL(!true),
+        MODAL_MSG('Sector was updated successfully!')
       ])
     ))
 )
@@ -58,7 +60,11 @@ const deleteListSector = (action$, state$) => action$.pipe(
         const newSectors = state$.value.listSectors.filter(val => val.idsectors !== response.data.deleteSector.idsectors);
         return newSectors;
       }),
-      map(transformedResponse => INSERT_SECTORS(transformedResponse))
+      switchMap(transformedResponse => [
+        INSERT_SECTORS(transformedResponse),
+        CLOSE_MODAL(!true),
+        MODAL_MSG('Sector was removed successfully!')
+      ]),
     ))
 )
 

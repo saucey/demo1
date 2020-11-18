@@ -24,47 +24,51 @@ const useStyles = makeStyles((theme) => ({
 
 export const AppModal = (props) => {
   
-    useEffect(() => {
-    }, [])
-    
-    const isNewModalOpen = useSelector((state) => state.modalOpen);
-    const [open, setOpen] = useState(false);
-    const classes = useStyles();
-    const dispatch = useDispatch()
-    
-    const modalOpen = (close) => {
-      dispatch(CLOSE_MODAL(close))
-    }
-    
-    if (isNewModalOpen) {
-      setOpen(true);
-      modalOpen(!true);
-    }
-    
-    console.log(isNewModalOpen, 'isNewModalOpen')
-    
-    const handleClose = () => {
-      setOpen(false);
-    };
-    
-    return (
-      <Modal
-      aria-labelledby="transition-modal-title"
-      aria-describedby="transition-modal-description"
-      className={classes.modal}
-      open={open}
-      onClose={handleClose}
-      closeAfterTransition
-      BackdropComponent={Backdrop}
-      BackdropProps={{
-        timeout: 500,
-      }}
-      >
-      <Fade in={open}>
-      <div className={classes.paper}>
-            {props.children}
-      </div>
-      </Fade>
-      </Modal>
-      )
+  useEffect(() => {
+  }, [])
+  
+  const isNewModalOpen = useSelector((state) => state.modalOpen);
+  const [open, setOpen] = useState(false);
+  const classes = useStyles();
+  const dispatch = useDispatch()
+  
+  const modalOpen = (close) => {
+    dispatch(CLOSE_MODAL(close))
+  }
+  
+  if (isNewModalOpen) {
+    setOpen(true);
+    modalOpen(null);
+  } 
+  
+  if (isNewModalOpen === false) {
+    setOpen(false);
+    modalOpen(null);
+  }
+  
+  
+  const handleClose = () => {
+    setOpen(false);
+  };
+  
+  return (
+    <Modal
+    aria-labelledby="transition-modal-title"
+    aria-describedby="transition-modal-description"
+    className={classes.modal}
+    open={open}
+    onClose={handleClose}
+    closeAfterTransition
+    BackdropComponent={Backdrop}
+    BackdropProps={{
+      timeout: 500,
+    }}
+    >
+    <Fade in={open}>
+    <div className={classes.paper}>
+    {props.children}
+    </div>
+    </Fade>
+    </Modal>
+    )
   }

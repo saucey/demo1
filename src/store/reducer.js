@@ -4,13 +4,14 @@ const initState = {
   userLoggedIn: null,
   listSectors: [],
   epic: null,
-  modalOpen: false
+  modalOpen: null,
+  modalMsg: null
 }
 
 const Reducer = (state = initState, action) => {
 
-  console.log(state, 'state in reducer')
-  console.log(action, 'action in reducer')
+  console.log(state, 'happening2')
+  console.log(action, 'happening2')
 
   switch (action.type) {
     case 'LOGIN':
@@ -42,7 +43,12 @@ const Reducer = (state = initState, action) => {
         ...state,
         modalOpen: action.modalOpen
       }
-
+    
+    case 'MODAL_MSG':
+      return {
+        ...state,
+        modalMsg: action.modalMsg
+      }
       // you can have as many case statements as you need
 
     default:

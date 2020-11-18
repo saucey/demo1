@@ -1,15 +1,18 @@
 import React, {useEffect} from 'react'
 import { useLocation } from 'react-router-dom';
 import Authorization from '../../components/higher-order-components/authorization'
-
+import { useSelector } from 'react-redux'
 import Records from './records'
 import Sectors from './sectors'
-
+import ModalMessaging from '../../components/modalMessaging'
 
 
 const Home = () => {
 
   const location = useLocation();
+  // const wtf = useSelector((state) => state);
+
+  
   
   const PageRoute = () => {
 
@@ -43,7 +46,8 @@ const Home = () => {
   }
 
   return (
-    <div>
+    <div style={{ position: 'relative' }}>
+      <ModalMessaging />
       <PageRoute />
     </div>
   )

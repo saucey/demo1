@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button'
 import { useDispatch, useSelector } from 'react-redux'
 
 const SectorForm = (sect) => {
-
+  
   console.log(sect, 'sect')
   
   const { register, handleSubmit, errors } = useForm({ mode: 'onSubmit', reValidateMode: 'onSubmit' })
@@ -67,8 +67,8 @@ const SectorForm = (sect) => {
     variant="outlined"
     margin="normal"
     fullWidth
-        name="short"
-        fullWidth={true}
+    name="short"
+    fullWidth={true}
     label="Short"
     type="short"
     id="short"
