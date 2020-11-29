@@ -12,7 +12,7 @@ import DeleteConfirmationForm from '../../components/deleteConfirmationForm'
 import GreenButtonCustom from '../../components/greenButtonCustom'
 import { CLOSE_MODAL, DELETE_SECTOR, GET_SECTORS } from '../../store/actions'
 import { AppModal } from '../../components/modal'
-
+import moment from 'moment'
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -65,6 +65,14 @@ const Sectors = () => {
       return false;
     }
   }
+
+  console.log(listSectors, 'LIST')
+  
+  listSectors.map(val => {
+    val.active_from = moment(new Date(val.active_from)).format("ll");
+  })
+
+  
   
   const columns = [
     { field: 'idsectors', headerName: 'Sector ID', width: 100 },
@@ -127,7 +135,7 @@ const Sectors = () => {
           <DisplayModalForm/>
         </AppModal>
         
-        <DataGrid rows={listSectors} columns={columns} pageSize={10} checkboxSelection />
+        <DataGrid rows={listSectors} columns={columns} pageSize={6} checkboxSelection />
         </div>
         )
       }
